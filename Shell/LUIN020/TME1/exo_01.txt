@@ -1,0 +1,19 @@
+Question 1: 
+Impossibilite de remonter plus haut que la racine
+
+
+Question 2:
+Retour dans Home
+
+Question 3:
+cd /
+
+Question 4:
+cd /Users/cyrena/
+
+Question 5:
+Le bash substitue la varible PWD a chaque utilisation de path
+dons si un fichier/directory n'est pas retrouver il affiche une erreur
+
+
+

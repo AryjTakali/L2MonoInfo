@@ -1,0 +1,16 @@
+
+
+
+#################################### Exercice 1 ##########################################
+
+en utilisant: cat | wc -l < (non du fichier)
+nb_ligne dico : 
+nb_ligne dico_light : 100216 
+
+------------- Q.1 -----------
+
+cat dico.txt | grep CHAT
+
+
+
+------------- Q.2 -----------

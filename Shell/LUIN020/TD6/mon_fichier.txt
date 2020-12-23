@@ -1,0 +1,6 @@
+function 
+Je suis un fichier 
+Je fas plus d'une ligne 
+FIN!
+Le toto passe le totoique
+Les tutus des totos du toto

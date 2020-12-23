@@ -1,0 +1,37 @@
+Fichier Transport_description.math
+
+set I;
+/* I est  l'ensemble des usines de production */
+
+set J;
+/* J est l'ensemble des clients */
+
+param a{i in I};
+/* a[i] est la capacité de production de l'usine i en nombre de caisses */
+
+param b{j in J};
+/* b[j] est la demande du client j en nombre de caisses */
+
+param d{i in I, j in J};
+/* d[i,j] est la distance en milliers de kilomètres entre une usine i et un client j */
+
+param f;
+/* f est le coût de transport en dollars par caisse et par milliers de kilomètre */
+
+param c{i in I, j in J} := f * d[i,j] / 1000;
+/* c[i,j] est le coût de transport en Kilo-dollars par caisse de l'usine i au client j */
+
+var x{i in I, j in J} >= 0;
+/* x[i,j] est une variable de décision égale au nombre de caisses tranportées de l'usine i vers le client j */
+
+
+/* Si on veut les variables x entières, on écrit: var x{i in I, j in J} >= 0, integer; */
+
+minimize cost: sum{i in I, j in J} c[i,j] * x[i,j];
+/* Objectif: coût total de transport minimum en kilodollars */
+
+s.t. CteCapacite{i in I}: sum{j in J} x[i,j] <= a[i];
+/* Contrainte due à la capacité max de production de chaque usine i */
+
+s.t. CteDemande{j in J}: sum{i in I} x[i,j] >= b[j];
+/* Contrainte due à la demande de chaque client j */

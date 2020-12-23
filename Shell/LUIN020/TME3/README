@@ -1,0 +1,62 @@
+(* ========================================== *)
+(* == LU2IN020 - C. Ramdani       3805942  == *)
+(* == TP 3                                 == *)
+(* ========================================== *)
+
+
+(* ==========================================  Exercice 1  ========================================== *)
+(* == Question 1 == *)
+
+Si aucun int n'est rentree au moment de l'execution, le programme affiche message d'erreur
+Sinon le programme chiffre les messages depuis stdin en utilisant la methode de cesar.
+Cette methode consiste a decaler les lettres de l'alphabet.
+Ainsi si le parametre lors de l'execution est 3, entrer lol affichera oro.
+la cle est 16
+
+
+(* == Question 4 == *)
+
+La cle est 16, trouve a l'aide du programe suivant : 
+
+#!/bin/bash
+
+for i in {1..26}; do
+	echo -n "decalage de $i : " >> best_decalage
+	 ./a.out $i < fenetre_sur_coquillage/part1 >>best_decalage
+done
+
+
+(* == Question 5 == *)
+
+for f in ./fenetre_sur_coquillage/part*; do
+	 ./a.out 16 < $f >> news.txt
+done
+
+
+le text en clair est :  
+Le Bash c'est même sous Windows !!!
+Grâce à Windows Subsystem for Linux (wsl),
+il est aujourd'hui possible d'exécuter des
+exécutables binaires Linux (au format ELF)
+de manière native sur Windows 10. On peut
+voir ce mécanisme comme une émulation du 
+"mode user" d'un système gnu-Linux. Une fois
+activé, on a accès à plusieurs distributions
+intégrant Bash.
+
+
+
+(* ==========================================  Exercice 2  ========================================== *)
+
+
+
+(* == Question 4 == *)
+
+[ [ $RANDOM % 6 ] -eq 0 ] && echo you lost everything || echo lucky boy
+
+
+(* ==========================================  Exercice 4  ========================================== *)
+
+(* == Question 1 == *)
+
+wc -m < test

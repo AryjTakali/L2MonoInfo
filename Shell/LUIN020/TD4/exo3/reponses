@@ -1,0 +1,43 @@
+
+	Question 1
+cat notes.lst | head -n 1
+Prenom Nom F/G : UE1 UE2 UE3
+
+	Question 2
+cat notes.lst | grep 'Satomi' | cut -d ':' -f 2
+17 5 3
+
+	Question 3
+cat notes.lst | tail -n 1 | cut -d ':' -f 2
+
+	Question 4
+cat notes.lst | head -n 2 | tail -n 1 | cut -d ':' -f 2
+ 16 12 17
+
+	Question 5
+cat notes.lst | tail -n +2 | sort | uniq | cut -d ' ' -f 1 | wc -l
+      14
+
+Comment : tail -n +2 permet d'exclure la 1e ligne 
+sort avant le uniq pour que ce soit trier dans l'ordre alphabetique -> sinon le uniq ne fonction pas 
+
+
+	Question 6
+
+F=$(cat notes.lst | cut -d " " -f3 | tail -n +2 | grep F | wc -l)
+G=$(cat notes.lst | cut -d " " -f3 | tail -n +2 | grep G | wc -l)
+echo "Il y a $F filles et $G garcons sur $((F + G)) eleves"
+
+
+    Question 7
+
+cat notes.lst | grep 'Satomi' | cut -d ':' -f 2
+notes=$(!!)-> stocker resultat de la derniere ligne de commande execute
+
+sum=0
+
+for i in $notes;do
+	sum=$((sum + i))
+done
+	echo $sum
+	echo $((sum / 3))	

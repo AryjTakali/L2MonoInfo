@@ -1,0 +1,6 @@
+Question 1: 
+Sans le dernier / bash pense avoir le nom de directory a creer alors qu'il s'agit bien d'un directory que l'on veut creer :
+"mkdir: LUIN020/TME1: File exists"
+
+Question 2: 
+brew install tree

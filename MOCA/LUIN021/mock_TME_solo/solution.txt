@@ -1,0 +1,39 @@
+Problem:    
+Rows:       3
+Columns:    4
+Non-zeros:  12
+Status:     OPTIMAL
+Objective:  obj = 7950 (MAXimum)
+
+   No.   Row name   St   Activity     Lower bound   Upper bound    Marginal
+------ ------------ -- ------------- ------------- ------------- -------------
+     1 c1           B            970                        1500 
+     2 c2           NU          2000                        2000          4.25 
+     3 c3           B             90                         100 
+
+   No. Column name  St   Activity     Lower bound   Upper bound    Marginal
+------ ------------ -- ------------- ------------- ------------- -------------
+     1 x1           NL            10            10            20          -7.5 
+     2 x2           B             15            10               
+     3 x3           NL            10            10                       -32.5 
+     4 x4           NL            10            10                         -15 
+
+Karush-Kuhn-Tucker optimality conditions:
+
+KKT.PE: max.abs.err = 0.00e+00 on row 0
+        max.rel.err = 0.00e+00 on row 0
+        High quality
+
+KKT.PB: max.abs.err = 0.00e+00 on row 0
+        max.rel.err = 0.00e+00 on row 0
+        High quality
+
+KKT.DE: max.abs.err = 0.00e+00 on column 0
+        max.rel.err = 0.00e+00 on column 0
+        High quality
+
+KKT.DB: max.abs.err = 0.00e+00 on row 0
+        max.rel.err = 0.00e+00 on row 0
+        High quality
+
+End of output

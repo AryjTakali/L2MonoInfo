@@ -1,0 +1,20 @@
+question 2:
+
+Ici en C les arguments entre sur la ligne de commande sont substitue dans le programe comme les variables vu en bash
+ainsi argv[1] = 23 et argv[2] = 12 
+c'est similaire a cat fichier{a,b}
+on peut dailleurs executer: ./sum {23,12}
+
+
+Question 3:
+il etudie les "parametre" un a un a l'aide des separateurs espaces
+
+Question 5:
+bash creation_di.sh
+12 processus sont cree, 1 a chaque boucle
+
+Question 6:
+oui en mettant tout sur une ligne 
+mkdir LU2IN020{,/{0,{1..9},10,11}}
+afin de gagner en rapiditer
+

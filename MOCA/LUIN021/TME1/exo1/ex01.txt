@@ -1,0 +1,26 @@
+ 2 . 
+	valeur otpimal = 10.5
+	solution = (2.5 , 1.5, 0)
+tel que 
+x1 = 2.5 est en base ; 
+x2 = 1.5 est en base ;
+x3 = 0   est hors base (a borne inf);
+
+les contraintes serrées sont c1 et c2.	
+
+
+3.
+	-	si on augmente de 1 me terme de droite de c2
+	valeur optimal = 11
+	solution = (3 , 1, 0)
+x1 = 3 est en base ; 
+x2 = 1 est en base ;
+x3 = 0   est hors base (a borne inf);
+
+	-si on augmente de 1 me terme de droite de c1
+	valeur optimal = 12
+	solution = (2 , 3, 0)
+
+x1 = 2 est en base ; 
+x2 = 3 est en base ;
+x3 = 0   est hors base (a borne inf);

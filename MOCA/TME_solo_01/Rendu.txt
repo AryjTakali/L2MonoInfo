@@ -1,0 +1,131 @@
+(* ========================================== *)
+(* == LU2IN021 - C. Ramdani       3805942  == *)
+(* == TME_Solo                             == *)
+(* ========================================== *)
+
+
+(* == Question 1 == *)
+
+Soit les variable de décisions  :
+- x1 : nombre d'ares de pommes de terre à exploiter
+- x2 : nombre d'ares de citrouilles à exploiter
+
+La fonction objective est obtenue en multipliant :
+- le profit par le rendement d'une are de pomme de terre ou citrouille/
+Soit les coefficient pour: 
+x1 : 5 * 50 
+x2 : 3 * 105  
+
+Les contraintes correspondent à :
+- c1 : nombre d'ares exploitable:
+- c2 : maximum de pomme de terre produite par an
+- c3 : maximum de citrouille produite par an
+- c4 : maximum d'engrais A 
+- c5 : maximum d'engrais B
+
+On obtient le programme linéaire : 
+
+./agriculteur.lp
+
+Maximize
+    250 x1 + 315 x2
+Subject To
+    c1 : x1 + x2 <= 200
+    c2 : 5 x1 <= 750
+    c3 : 3 x2 <= 300
+    c4 : 0.16 x1 + 0.275 x2 <= 35
+    c5 : 0.24 x1 + 0.225 x2 <= 100
+
+
+(* == Question 2 == *) 
+
+La solution optimale est :  
+
+- x1* = 150 ares
+- x2* = 40 ares
+- z* = 50 100e
+
+donc le profit est bien de 50 100e
+
+(* == Question 3 == *) 
+
+La contrainte c4 est serre donc il serait interessant d'augmenter le membre de droite(soit le nombre d'engrais achete)
+On ajoute la variable de decision y qui correspond au nombre d'engrais acheté
+
+./achatEngrais.lp 
+
+Maximize
+    250 x1 + 315 x2 - 1000 y
+Subject To
+    c1 : x1 + x2 <= 200
+    c2 : 5 x1 <= 750
+    c3 : 3 x2 <= 300
+    c4 : 0.16 x1 + 0.275 x2 - y <= 35
+    c5 : 0.24 x1 + 0.225 x2 <= 100
+End
+
+C'est interessant d'en acheter car le profit augmente de 400e : 
+
+On obtient alors les valeurs optimale : 
+- x1'* = 150 ares
+- x2'* = 50 ares
+- y = 2.75tonnes
+- z'* = 50 500e
+
+On achete alors 2.75tonnes d'engrais de type A.
+
+
+(* == Question 4 == *) 
+
+La contrainte c1 n'est pas serre donc il est possible d'avoir un entrepot de 10are soit 1000m2.
+Et ce sans diminuer le profit genere.
+
+(* == Question 5 == *) 
+
+Oui c'est interessant : 
+
+./invesstisseur.lp 
+
+Maximize
+    250 x1 + 315 x2 + 12000y 
+Subject To
+    c1 : x1 + x2  <= 200
+    c2 : 5 x1 <= 750
+    c3 : 3 x2 <= 300
+    c4 : 0.16 x1 + 0.275 x2 <= 35
+    c5 : 0.24 x1 + 0.225 x2 <= 100
+    c6 : x2 - 2 x1 >= 0
+    c7 : y = 1
+End
+
+On obtient alors les valeurs optimales :
+- x1'* = 49.2958  ares
+- x2'* = 98.5915  ares
+- y = 1 invesstissement
+- z'* = 55380.28169e
+
+Soit un gain de 5280e
+
+(* == Question 6 == *) 
+
+./haricot.lp 
+
+Maximize
+    250 x1 + 315 x2 + x3
+Subject To
+    c1 : x1 + x2 <= 200
+    c2 : 5 x1 <= 750
+    c3 : 3 x2 <= 300
+    c4 : 0.16 x1 + 0.275 x2 <= 35
+    c5 : 0.24 x1 + 0.225 x2 + x3 <= 100
+
+On obtient alors les valeurs optimales :
+- x1'* = 150  ares
+- x2'* = 40  ares
+- x3 = 10are
+- z'* = 50110e
+
+Soit un gain de 10e
+Oui il est tres interessant de produire des haricots. 
+En effet meme avec un profit de 1e par ares(ce qui est largement sous evalué) on obtient un profit/
+Ceci est du au fait que la contrainte c5(L'engrais B) ne soit pas serré. 

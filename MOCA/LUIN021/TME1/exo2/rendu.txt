@@ -1,0 +1,41 @@
+1 .
+	valeur optimal1 =  1800€
+	solution =  (0, 0, 60)
+tel que 
+
+x1 (=Fromage) = 0 est hors base (borne inf)
+x2 (=Yaourts) = 0 est hors base (borne inf)
+x3 (= Lait cru) = 60 est en base
+
+2.
+	En ajoutant une contrainte tel que la somme des produits laitiers doit etre superieur ou egale a 10kl on obtient :
+	valeur optimal2 =  1712,5€
+	solution =  (10, 0, 48.75)
+
+valeur optimal2 < valeur optimal1
+car 1800 < 1712.5
+Non utiliser au moins 10kl de produits laitier n'est pas rentable.
+
+3.
+	En augmentant le gain obtenu lors de la production de Fromage:
+L'exploitant obtient un bénéfice a partir d'un gain de 96€/kl.
+tel qu'on obtienne :
+	valeur optimal2 =  1808,5€
+	solution =  (8, 0, 52)
+	
+
+4.
+	En modifiant la contrainte d'argent on remarque que la solution est identique a la premiere.
+En effet, lorsque l'on augmente le terme de droite de la contrainte 1 et qu'on soustrait cet ecart a la valeur objectif le resultat est identique. 
+L'exploitant n'est pas limité par l'argent mais plutot par sa quantité de lait.
+Donc un emprunt serait inutile.
+
+5.
+	Envisageable à partir du prix du benefice obtenu si c'était fait par l'exploitant lui meme.
+Donc a un prix supérieur à 30€/kl soit le bénfice obtenu lorsque l'on exploite le lait cru.
+
+6. 
+	S'il vend tout son lait il obtiendra un gain de 1200 car  :
+	60 * 20 = 1200
+S'il veut investir 1600€ il doit au moins obtenir 1800 - 1200 = 600€ de bénéfice pour avoir autant que son premier projet.
+Soit un gain de 2200€

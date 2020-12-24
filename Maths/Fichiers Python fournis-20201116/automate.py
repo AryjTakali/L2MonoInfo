@@ -25,12 +25,16 @@ class Automate(AutomateBase):
         return successeurs
 
 
-    def succ (self, listStates, lettre):
+    def succ(self, listStates, lettre):
         """list[State] x str -> list[State]
         rend la liste des états accessibles à partir de la liste d'états
         listStates par l'étiquette lettre
         """
-        return
+        ret = []
+        # s: state
+        for s in listStates:
+            ret += self.succElem(s, lettre)
+        return ret
 
 
 
@@ -48,7 +52,14 @@ class Automate(AutomateBase):
         """ Automate x str -> bool
         rend True si auto accepte mot, False sinon
         """
-        return
+        s=auto.getListInitialStates()
+        for i in mot:
+            s = auto.succ(s, i)
+        fin={x for x in s}
+        for sfin in auto.getListFinalStates():
+            if sfin in fin :
+                return True
+        return False
 
 
     @staticmethod
@@ -56,7 +67,12 @@ class Automate(AutomateBase):
         """ Automate x str -> bool
          rend True si auto est complet pour alphabet, False sinon
         """
-        return 
+        allS=auto.listStates
+        for l in alphabet:
+            for s in allS:
+                if (auto.succElem(s, l) == []):
+                    return False
+        return True
 
 
         
@@ -65,7 +81,12 @@ class Automate(AutomateBase):
         """ Automate  -> bool
         rend True si auto est déterministe, False sinon
         """
-        return
+        alpha= auto.getAlphabetFromTransitions()
+        for l in alpha:
+            for s in auto.listStates:
+                if len(auto.succElem(s, l)) > 1:
+                    return False
+        return True
         
 
        
@@ -74,7 +95,17 @@ class Automate(AutomateBase):
         """ Automate x str -> Automate
         rend l'automate complété d'auto, par rapport à alphabet
         """
-        return
+        new = copy.deepcopy(auto)
+        if not Automate.estComplet(auto,alphabet):
+            allS=new.listStates
+            # sp : State
+            sp = State(len(allS) + 1, False, False)
+            new.addState(sp)
+            for l in alphabet:
+                for s in allS:
+                    if (auto.succElem(s, l) == []):
+                        new.addTransition(Transition(s, l, sp))
+        return new
 
        
 

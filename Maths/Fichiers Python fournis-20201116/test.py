@@ -38,7 +38,8 @@ t = Transition(s0, "a", s1)
 auto = Automate([t, t1, t2, t3, t4, t5, t6], [s0, s1, s2])
 
 #   succ
-# liste = auto.succ([s0, s1,s2], 'a')
+liste = auto.succ([s0], "a")
+print(liste)
 
 def testAccepte():
     mot = "bba"
@@ -63,8 +64,27 @@ def  testEstDeterministe():
     else:
         print("L'automate n'est pas deterministe")
 
+#Automate.completeAutomate(auto,"abc").show("test")
 # pour determiniser l'automate enlever la transition t
-# testEstDeterministe()
-#
+#testEstDeterministe()
 
-Automate.completeAutomate(auto,"abc").show("test")
+
+# init = auto.getListInitialStates()
+# final = set(auto.getListFinalStates())
+# alphabet=auto.getAlphabetFromTransitions()
+
+# ns = State(set(init), True, False)
+# s = ns
+# allState = ns
+# new = Automate([],[ns])
+# for l in alphabet:
+#     ns = auto.succ(s, l)
+#     if ns not in set(allState):
+#         new.addState(ns)
+#         # allState += ns
+#         # new.addTransition(Transition(s, l, ns))
+# # print(new)
+
+
+#Pour voir le complementaire d'un automate 
+#print(Automate.complementaire(auto,"ab"))

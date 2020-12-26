@@ -107,21 +107,43 @@ class Automate(AutomateBase):
                         new.addTransition(Transition(s, l, sp))
         return new
 
-       
 
     @staticmethod
     def determinisation(auto) :
         """ Automate  -> Automate
         rend l'automate déterminisé d'auto
-        """
+         """
+        if Automate.estDeterministe(auto):
+            new = copy.deepcopy(auto)
+        else:
+            initS = set(auto.getListInitialStates())
+            final = set(auto.getListFinalStates())
+            alphabet=auto.getAlphabetFromTransitions()
+            newAuto= Automate([], [set(auto.getListInitialStates())] + [auto.succ() for ])
+
+        #     # ns : State
+        #     ns = State(set(init), True, False)
+        #     s = ns
+        #     allState = ns
+        #     new.addState(ns)
+            
+        #     while i in allState: 
+        #         for l in alphabet:
+        #             ns = auto.succ(s, l)
+        #             if ns not in allState:
+        #                 new.addState(ns)
+        #                 allState += ns
+        #                 new.addTransition(Transition(s, l, ns))
+        # return new
         return
-        
+
     @staticmethod
     def complementaire(auto,alphabet):
         """ Automate -> Automate
         rend  l'automate acceptant pour langage le complémentaire du langage de a
         """
-              
+        complet = Automate.estComplet(auto, alphabet) if copy.deepcopy(auto) else Automate.completeAutomate(auto, alphabet)
+        return Automate(auto.listTransitions, [State(s.id, s.init, not s.fin) for s in auto.listStates ])
    
     @staticmethod
     def intersection (auto0, auto1):

@@ -89,21 +89,157 @@ PID  PPID S COMMAND
 
 Ce qui prouve bien l'adoption d'un processus par init.
 
-## Question 2
+## Question 3
+
+Afin de répéter la commande chaque seconde on utilise sleep 1
 
 ```bash 
 #! /bin/bash
 
 if [ !-e $1 ] || [ !-f '/proc/$1/exe' ]; then
-    echo "Usage : $0 <PID>"
-    exit
+    ./myZombie &
 fi
 
-for i in {1..60}; do
-        ps o pid,ppid,state,command $1
-        sleep 1
+i=0
+while [ $i -lt 59 ]; then
+    ps o pid,ppid,state $1
+    sleep 1
+    i=$((i+1))
 done
 ```
 
 # Exercice 2
 
+```bash
+#! /bin/bash
+
+if [ ! -d dico ]; then
+       mkdir dico
+fi
+
+touch dico/{A..Z}
+
+while read line; do
+  for i in {A..Z};do
+        if [ ${line:0:1} == $i ]; then
+                echo "$line" >> dico/$i
+        fi
+  done
+done < dico.txt
+```
+
+
+```bash
+#! /bin/bash
+
+if [ ! -d dico ]; then
+       mkdir dico
+fi
+
+touch dico/{A..Z}
+
+while read line; do
+  echo "$line"  >> dico/${line:0:1}
+done < dico.txt
+
+for f in [A-Z]; do  mv $f $f.txt ;done
+```
+
+# Exercice 3
+
+## Question 1
+
+```bash
+#! /bin/bash
+
+champion=""
+max=0
+
+if [ ! -e $1 ] && [ ! -f $1 ]; then
+        echo "Usage : $0 <nom_fichier>"
+        exit
+fi
+
+while read line ;do 
+        if [ $max -lt ${#line} ]; then
+                champion=$line
+                max=${#line}
+        fi
+done < $1
+
+echo $champion > $1.tmp
+```
+
+## Question 2
+
+``` bash
+#! /bin/bash
+
+if [ ! -e $1 ] && [ ! -d $1 ]; then
+        echo "Usage : $0 <nom_repertoire>"
+        exit
+fi
+
+for f in $1/*.txt ; do 
+        ./longest.sh $f &
+        liste_pid="$! "
+done
+
+champion=""
+max=0
+
+for y in $liste_pid; do
+                wait $y
+        done
+
+for f in $(cat $1/*.tmp); do 
+    if [ $max -lt ${#f} ];then
+        champion=$f
+        max=${#f}
+    fi
+done
+
+echo $champion
+```
+
+## Question 3
+
+```
+time ./longest.sh dico.txt
+```
+
+- real    0m2,110s
+- user    0m1,797s
+- sys     0m0,308s
+
+```
+time ./paraLongest.sh dico
+```
+
+- real    0m0,130s
+- user    0m0,096s
+- sys     0m0,030s
+
+On remarque que le temps mis par le script _paraLongest.sh_ est beaucoup plus rapide que _longest.sh_. 
+-   Le temps d'execution a été divisé par 20
+-   Le temps d'utilisation du processeur en mode user a été divisé par plus de 100
+-   Le temps d'utilisation du processeur en mode systeme a été divisé par plus de 10
+Cela prouve que paralelliser les taches optimise grandement le temps de recherche.
+
+## Question 4
+
+```
+time ./longest.sh dico.txt
+```
+
+- real    0m2,110s
+- user + sys =  0m1,797s + 0m0,308s = 0m2,105 
+
+```
+time ./paraLongest.sh dico
+```
+
+- real    0m0,130s
+- user + sys =  0m0,096s + 0m0,030s = 0m0,126s
+
+On remarque que la comme des temps user et sys sont tres proche des temps de real a 0,005s pres

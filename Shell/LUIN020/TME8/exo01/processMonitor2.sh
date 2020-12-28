@@ -1,11 +1,14 @@
 #! /bin/bash
 
 if [ !-e $1 ] || [ !-f '/proc/$1/exe' ]; then
-    echo "Usage : $0 <PID>"
+    ./myZombie &
     exit
 fi
 
-for i in {1..60}; do
-	ps o pid,ppid,state,command $1
-	sleep 1
+i=0
+while [ $i -lt 59 ]; do
+    echo "$i secondes:"
+    ps o pid,ppid,state $!
+    sleep 1
+    i=$((i+1))
 done

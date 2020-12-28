@@ -1,14 +1,13 @@
-#! /bin/bash
+#!/bin/bash
 
 if [ ! -e $1 ] || [ ! -f '/proc/$1/exe' ]; then
     echo "Usage : $0 <PID>"
+    exit
 fi
 
-ppid=$(ps o pid,ppid,state $1 | grep $1 | cut -d ' ' -f 2)
-
-while [ ! -f '/proc/$1/exe' ]; do
-       	if [ $ppid -ne $(ps o pid,ppid,state $! | grep $1 | cut -d ' ' -f 2) ]; then
-		echo "Le processus est devenu zombie !!!"
-		break
-	fi
+state=$( ps o pid,state $1  | grep "$1" | tr -s ' ' | cut -d ' ' -f2)
+while [ $state != 'Z' ]
+do
+        state=$(ps o pid,state $1  | grep "$1" | tr -s ' ' | cut -d ' ' -f2)
 done
+echo "Le processus est devenu un zombie"

@@ -36,10 +36,9 @@ t = Transition(s0, "a", s1)
 
 
 auto = Automate([t, t1, t2, t3, t4, t5, t6], [s0, s1, s2])
-
 #   succ
-liste = auto.succ([s0], "a")
-print(liste)
+#liste = auto.succ([s0], "a")
+Automate.determinisation(auto)
 
 def testAccepte():
     mot = "bba"
@@ -88,3 +87,4 @@ def  testEstDeterministe():
 
 #Pour voir le complementaire d'un automate 
 #print(Automate.complementaire(auto,"ab"))
+

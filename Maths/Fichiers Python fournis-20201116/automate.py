@@ -107,6 +107,21 @@ class Automate(AutomateBase):
                         new.addTransition(Transition(s, l, sp))
         return new
 
+    @staticmethod
+    def isFinal(list, final):
+        for s in list : 
+            if s in final :
+                return True
+        return False
+
+    @staticmethod
+    def newTransition(src, lettre, dst, liste):
+        for s in liste:
+            if src == s :
+                source = s.id
+            if dst == s.label :
+                dest = s.id
+        return Transition(source, lettre, dest)
 
     @staticmethod
     def determinisation(auto) :
@@ -116,26 +131,32 @@ class Automate(AutomateBase):
         if Automate.estDeterministe(auto):
             new = copy.deepcopy(auto)
         else:
-            initS = set(auto.getListInitialStates())
-            final = set(auto.getListFinalStates())
-            alphabet=auto.getAlphabetFromTransitions()
-            newAuto= Automate([], [set(auto.getListInitialStates())] + [auto.succ() for ])
+            wait = [auto.getListInitialStates()]
+            final = auto.getListFinalStates()
+            alpha=auto.getAlphabetFromTransitions()
+            new= Automate([])
+            i = 0
+            dico={str(set(wait[0])): 0}
 
-        #     # ns : State
-        #     ns = State(set(init), True, False)
-        #     s = ns
-        #     allState = ns
-        #     new.addState(ns)
-            
-        #     while i in allState: 
-        #         for l in alphabet:
-        #             ns = auto.succ(s, l)
-        #             if ns not in allState:
-        #                 new.addState(ns)
-        #                 allState += ns
-        #                 new.addTransition(Transition(s, l, ns))
-        # return new
-        return
+            while len(wait) > 0 :
+                if wait[0] == auto.getListInitialStates():
+                    new.addState(State(i, True, Automate.isFinal(wait[0], final), str(set(wait[0]))))
+                    i += 1
+                else:
+                    new.addState(State(i, False, Automate.isFinal(wait[0], final), str(set(wait[0]))))
+                    dico[str(set(wait[0]))] = i
+                    i += 1
+                for lettre in alpha :
+                    ns = auto.succ(wait[0], lettre)
+                    if [ns] not in wait:
+                        wait += [ns]
+                    new.addState(State(i, False, Automate.isFinal(wait[0],final), str(set(ns))))
+                    dico[str(set(wait[0]))] = i
+                    i+=1
+                    new.addTransition(dico[str(set(wait[0]))], lettre, dico[str(set(ns))])
+                wait.pop(0)
+        return new
+ 
 
     @staticmethod
     def complementaire(auto,alphabet):
@@ -143,7 +164,7 @@ class Automate(AutomateBase):
         rend  l'automate acceptant pour langage le complémentaire du langage de a
         """
         complet = Automate.estComplet(auto, alphabet) if copy.deepcopy(auto) else Automate.completeAutomate(auto, alphabet)
-        return Automate(auto.listTransitions, [State(s.id, s.init, not s.fin) for s in auto.listStates ])
+        return Automate(complet.listTransitions, [State(s.id, s.init, not s.fin) for s in complet.listStates])
    
     @staticmethod
     def intersection (auto0, auto1):

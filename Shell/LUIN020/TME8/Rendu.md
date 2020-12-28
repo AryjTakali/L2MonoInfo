@@ -93,20 +93,23 @@ Ce qui prouve bien l'adoption d'un processus par init.
 
 Afin de répéter la commande chaque seconde on utilise sleep 1
 
+./processMonitor.sh
 ```bash 
 #! /bin/bash
 
 if [ !-e $1 ] || [ !-f '/proc/$1/exe' ]; then
-    ./myZombie &
+    echo "Usage : $0 <PID>"
 fi
 
 i=0
-while [ $i -lt 59 ]; then
+while [ $i -lt 59 ]; do
     ps o pid,ppid,state $1
     sleep 1
     i=$((i+1))
 done
 ```
+
+## Question 4
 
 # Exercice 2
 
@@ -149,6 +152,7 @@ for f in [A-Z]; do  mv $f $f.txt ;done
 
 ## Question 1
 
+./longest.sh
 ```bash
 #! /bin/bash
 
@@ -172,6 +176,7 @@ echo $champion > $1.tmp
 
 ## Question 2
 
+./paraLongest.sh
 ``` bash
 #! /bin/bash
 
@@ -188,15 +193,15 @@ done
 champion=""
 max=0
 
-for y in $liste_pid; do
-                wait $y
-        done
 
 for f in $(cat $1/*.tmp); do 
-    if [ $max -lt ${#f} ];then
-        champion=$f
-        max=${#f}
-    fi
+    for y in $liste_pid; do
+        wait $y
+        if [ $max -lt ${#f} ];then
+            champion=$f
+            max=${#f}
+        fi
+    done
 done
 
 echo $champion
@@ -216,9 +221,9 @@ time ./longest.sh dico.txt
 time ./paraLongest.sh dico
 ```
 
-- real    0m0,130s
-- user    0m0,096s
-- sys     0m0,030s
+- real    0m0,096s
+- user    0m0,071s
+- sys     0m0,012s
 
 On remarque que le temps mis par le script _paraLongest.sh_ est beaucoup plus rapide que _longest.sh_. 
 -   Le temps d'execution a été divisé par 20
@@ -239,7 +244,22 @@ time ./longest.sh dico.txt
 time ./paraLongest.sh dico
 ```
 
-- real    0m0,130s
-- user + sys =  0m0,096s + 0m0,030s = 0m0,126s
+- real    0m0,096s
+- user + sys =  0m0,071s + 0m0,012 = 0m0,083
 
-On remarque que la comme des temps user et sys sont tres proche des temps de real a 0,005s pres
+On remarque que la somme des temps user et sys sont tres proche des temps de real a 0,010s pres
+
+Ce resultat s'explique parce que 
+
+- Le temps ``real`` : correspond au temps ecoule entre le debut et la fin de l'appel comprenant temps utilisé par les processus et le temps en état bloqué
+
+- Le temps ``user`` : correspond au temps ou le processus est  en mode en mode utilisateur 
+- Le temps ``sys`` : correspond au temps le temps ou le processus est  en code en mode systeme (super utilisateur) 
+
+## Question 5
+
+```
+- taux de Parallelisme = (Temps real sans parallelisme)/(Temps real avec parallelisme)
+
+- 2,110 / 0,096 = 21,98 
+```

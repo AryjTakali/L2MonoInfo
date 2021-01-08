@@ -1,44 +1,3 @@
-# TD 8 
-
-# Exercice 3
-
-## Question 1
-
-```
-bash
-| ./patriarche.sh 
--------------------
-                   | echo "Je suis le patriarche"
-                   | ./descendant.sh 3 &
-                   |---------------------------|
-                   |                           | echo "je suis le descendant 3"
-                   |                           | ./descendant.sh 2 &
-                   | ./descendant.sh 2 &       |-----------------------|
-                   |                           |                       | echo "je suis le descendant 2"
-                   | ./descendant.sh 1 &       |                       | ./descendant 1 &
-                   |                           |                       |-----------------------|
-                   | ./descendant.sh 1 &       |                       |                       | echo "je suis le descendant 1"
-                   |                           |                       |                       | ./descendant 0
-                   | ./descendant.sh 0 &       |                       |                       |---------|
-                   |                           |                       |                       |         | echo "je suis le descendant 1"
-                   | echo "fin d'un descendant"|                       |                       |         | echo "fin d'un descendant"
-                   |                           | ./descendant.sh 2 &             
-                   |                           |
-                   |                           |
-                   |                           | terminaison
-                   |<==========================|
-                   | terminaison du père
- <=================                  
-| ...
-|
-|
-```
-
-
-## Question 2 
-
-Non parce que le processus de patriarche continue en parallele des processus fils. Donc si les processus fils ne sont pas finit il se terminera avant eux.
-Pour s'assurer qu'il finisse avant les autres il suffit de rajouter un _wait_ apres l'appel ./descendant 3 &
 
 # TME 8 
 
@@ -46,7 +5,7 @@ Pour s'assurer qu'il finisse avant les autres il suffit de rajouter un _wait_ ap
 
 ## Question 1
 
-avec la commande : 
+avec les commande : 
 ```bash 
 sleep 30 &
 ps o pid,ppid,state --pid $!
@@ -62,6 +21,7 @@ On obtient :
 
 Avec le script : 
 
+./script.sh
 ```bash
 #! /bin/bash
 
@@ -93,17 +53,43 @@ Ce qui prouve bien l'adoption d'un processus par init.
 
 Afin de répéter la commande chaque seconde on utilise sleep 1
 
+Il y a 2 methode : 
+
+
+La premiere lance la commande ps sur le pid en parametre pendant 1min. Et continue meme si le processus est terminé.
+En prenant soin qu'il y ait bien un parametre et que ce soit un pid.
+
+./processMonitor.sh
+```bash
+#! /bin/bash
+
+if [ $# -lt 1 ] || [ ! -f '/proc/$1/exe' ]; then
+    echo "Usage : $0 <PID>"
+    exit
+fi
+
+for i in {0..59}; do
+    echo "$1 secondes :"
+    ps o pid,ppid,state,command --pid $1
+    sleep 1
+done
+```
+
+La deuxieme lance la commande ps sur le pid en parametre pendant 1min. Mais s'arrete si le processus rentré en parametre se termine. Pour ce faire on utilise une variable qui sert de compteur de secondes.
+
 ./processMonitor.sh
 ```bash 
 #! /bin/bash
 
-if [ !-e $1 ] || [ !-f '/proc/$1/exe' ]; then
+if [ $# -lt 1 ] || [ ! -f '/proc/$1/exe' ]; then
     echo "Usage : $0 <PID>"
+    exit
 fi
 
 i=0
 while [ $i -lt 59 ]; do
-    ps o pid,ppid,state $1
+    echo "$1 secondes :"
+    ps o pid,ppid,state --pid $1
     sleep 1
     i=$((i+1))
 done
@@ -111,27 +97,31 @@ done
 
 ## Question 4
 
-# Exercice 2
-
+./zombieDetector.sh
 ```bash
-#! /bin/bash
+#!/bin/bash
 
-if [ ! -d dico ]; then
-       mkdir dico
+if [ $# -lt 1 ] || [ ! -f '/proc/$1/exe' ]; then
+    echo "Usage : $0 <PID>"
+    exit
 fi
 
-touch dico/{A..Z}
-
-while read line; do
-  for i in {A..Z};do
-        if [ ${line:0:1} == $i ]; then
-                echo "$line" >> dico/$i
-        fi
-  done
-done < dico.txt
+state=$( ps o pid,state $1  | grep "$1" | tr -s ' ' | cut -d ' ' -f2)
+while [ $state != 'Z' ]
+do
+        state=$(ps o pid,state $1  | grep "$1" | tr -s ' ' | cut -d ' ' -f2)
+done
+echo "Le processus est devenu un zombie"
 ```
 
+# Exercice 2
 
+Ce script permet de créer un répertoire dico, générer un fichier txt par lettre contenant tous les mots commençant par cette lettre.
+1. Creer le directory dico s'il n'existe pas
+2. Lis ligne par ligne contenant un mot
+3. Deplacer le mot dans le fichier correspondant a sa premiere lettre
+
+./mvscript1.sh
 ```bash
 #! /bin/bash
 
@@ -139,18 +129,21 @@ if [ ! -d dico ]; then
        mkdir dico
 fi
 
-touch dico/{A..Z}
-
 while read line; do
-  echo "$line"  >> dico/${line:0:1}
+  echo "$line"  >> dico/${line:0:1}.txt
 done < dico.txt
 
-for f in [A-Z]; do  mv $f $f.txt ;done
 ```
 
 # Exercice 3
 
 ## Question 1
+
+1. champion = mot le plus long 
+2. max = taille mot le plus long
+3. Si un fichier est bien rentré en parametre on commence la recherche
+4. Si un mot lu est plus long que champion on met a jour le plus long mot et sa taille
+5. On cree un fichier .tmp contenant le plus long mot
 
 ./longest.sh
 ```bash
@@ -159,7 +152,7 @@ for f in [A-Z]; do  mv $f $f.txt ;done
 champion=""
 max=0
 
-if [ ! -e $1 ] && [ ! -f $1 ]; then
+if [ $# -lt 1 ] || [ ! -f $1 ]; then
         echo "Usage : $0 <nom_fichier>"
         exit
 fi
@@ -176,11 +169,19 @@ echo $champion > $1.tmp
 
 ## Question 2
 
+1. Si un directory est bien rentré en parametre on commence la recherche
+2. On cree des fichiers tmp contenant le plus long mot de chaque fichier du directory en parallele (le mot le plus long par fichier sont independant les uns des autres)
+3. On garde dans une liste le pid de chaque processus de recherche
+4. champion = mot le plus long / max = taille mot le plus long
+5. Comme on a besoin du fichier contenant le mot le plus long par lettre on lance une commande wait sur la liste de PID pour verifier que le processus de recherche est bien fini
+6. Si un mot lu est plus long que champion on met a jour le plus long mot et sa taille
+7. On affiche le plus long mot du dictionnaire
+
 ./paraLongest.sh
 ``` bash
 #! /bin/bash
 
-if [ ! -e $1 ] && [ ! -d $1 ]; then
+if [ $# -lt 1 ] || [ ! -d $1 ]; then
         echo "Usage : $0 <nom_repertoire>"
         exit
 fi
@@ -204,7 +205,7 @@ for f in $(cat $1/*.tmp); do
     done
 done
 
-echo $champion
+echo "Le plus long mot du dictionnaire est : $champion"
 ```
 
 ## Question 3
@@ -254,12 +255,16 @@ Ce resultat s'explique parce que
 - Le temps ``real`` : correspond au temps ecoule entre le debut et la fin de l'appel comprenant temps utilisé par les processus et le temps en état bloqué
 
 - Le temps ``user`` : correspond au temps ou le processus est  en mode en mode utilisateur 
-- Le temps ``sys`` : correspond au temps le temps ou le processus est  en code en mode systeme (super utilisateur) 
+- Le temps ``sys`` : correspond au temps le temps ou le processus est en mode en mode systeme (super utilisateur)
+
+donc real = temps de processus en mode utilisateur + temps de processus en mode systeme 
 
 ## Question 5
 
 ```
-- taux de Parallelisme = (Temps real sans parallelisme)/(Temps real avec parallelisme)
+- taux de Parallelisme = (Temps real avec parallelisme)/(Temps real sans parallelisme)
 
-- 2,110 / 0,096 = 21,98 
+-  0,096 / 2,110* 100 = 4,5
 ```
+
+Oui ce resultat parfait satisfaisant car le taux est tres petit. Donc le temps de processus avec parallelisme est tres petit devant le temps du processus sans parallelisme.

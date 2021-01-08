@@ -3,7 +3,7 @@
 champion=""
 max=0
 
-if [ ! -e $1 ] && [ ! -f $1 ]; then
+if [ $# -lt $1 ] && [ ! -f $1 ]; then
 	echo "Usage : $0 <nom_fichier>"
 	exit
 fi

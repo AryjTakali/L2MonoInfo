@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ ! -e $1 ] || [ ! -f '/proc/$1/exe' ]; then
+if [ $# -lt 1 ] || [ ! -f '/proc/$1/exe' ]; then
     echo "Usage : $0 <PID>"
     exit
 fi

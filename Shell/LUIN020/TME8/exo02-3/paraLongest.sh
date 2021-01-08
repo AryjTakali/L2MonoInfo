@@ -1,6 +1,6 @@
 #! /bin/bash
 
-if [ ! -e $1 ] && [ ! -d $1 ]; then
+if [ $# -lt $1 ] && [ ! -d $1 ]; then
 	echo "Usage : $0 <nom_repertoire>"
 	exit
 fi
@@ -23,4 +23,4 @@ for f in $(cat $1/*.tmp); do
 	done	
 done
 
-echo $champion
+echo "Le plus long mot du dictionaire est $champion"

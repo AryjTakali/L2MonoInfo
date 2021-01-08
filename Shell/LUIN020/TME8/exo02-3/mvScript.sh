@@ -6,5 +6,5 @@ fi
 
 while read line; do
   echo "$line"  >> dico/${line:0:1}.txt
-done < dico.tx
+done < dico.txt
     

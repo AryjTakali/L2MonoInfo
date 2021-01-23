@@ -1,3 +1,6 @@
+Ce tme n'es pas fini 
+comme je suis sur mac envoyer le SIGUSR1 terminait le proc 
+
 # Exercice 1
 
 ## Question 1

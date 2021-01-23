@@ -1,8 +1,16 @@
 package pack1;
 
-public class A{
+public class A {
+    /**
+    constructeur appel methode a() */
+    // public A(){
+        // a();
+    // }
 
-    public A(){
-        System.out.println("A créé");
+    /**
+    methode de classe A, print a
+    */
+    public void a() {
+        System.out.println('a');
     }
 }

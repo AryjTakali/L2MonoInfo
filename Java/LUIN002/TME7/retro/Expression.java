@@ -1,6 +1,6 @@
 public abstract class Expression{
     private Valeur v;
 
-    public abstract Valeur getVal();
+    public abstract double  getVal();
 
 }

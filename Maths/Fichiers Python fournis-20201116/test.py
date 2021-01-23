@@ -48,10 +48,10 @@ auto = Automate([t1, t2, t3, t4, t5, t6], [s0, s1, s2])
 
 def testAccepte(auto,mot):
     if Automate.accepte(auto,mot):
-        print("L'automate accepte le mot ab")
+        print("L'automate accepte le mot " + mot)
     else:
-        print("L'automate n'accepte pas le mot ab")
-# testAccepte(autoAcc,"acf")
+        print("L'automate n'accepte pas le mot " + mot)
+testAccepte(auto,"bbb")
 
 def  testEstComplet():
     alphabet="ab"

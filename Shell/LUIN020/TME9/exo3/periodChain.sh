@@ -1,12 +1,18 @@
 #!/bin/bash
 
-if [ $# -ne 1 ] && [ $1 -lt 0 ] ; then
-	echo "Usage : $0 <number>"
-	exit
+if [ $# -lt 1 ] || [ $1 -lt 0 ] ; then
+	echo "Usage : $0 <positive_number>"
+	exit -1
 fi
 
-nb=$1
-for i in {1..$nb}; do
-	printf "Ola :%-$(($nb-$i))s0\n" " " 
-done
-
+if [ $1 -gt 0 ]; then
+	printf "Ola :%-$1s0\n" " " 
+	str="$str$(printf "Ola :%-$1s0\n" " ")"
+	echo $str
+	./$0 $(($1 - 1))
+	pid=$!
+else
+#	while [ 0 ];do
+		echo $str
+#	done 	
+fi
